@@ -94,7 +94,7 @@ This section will explain how to install Fedora on the newly created VM.
 - Confirm by clicking on *Begin Installation*.
 - Choose a root password and enter it twice (remember it for later)
 - Also, create a new user. Name the new user `gitianuser` (the full name doesn't matter, you can leave it empty)
-- Select *Make this user administrator* to add them to the sudo group.
+- Select *Make this user administrator* to add them to the wheel group.
 - Choose a user password and enter it twice (remember it for later)
 
 ![](figs/fedora_install_3_users.png)
