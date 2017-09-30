@@ -92,7 +92,7 @@ To select a different button, press `Tab`.
 
 - The VM will detect network settings using DHCP, this should all proceed automatically
 - Configure the network:
-  - Hostname `gitianuser`.
+  - Hostname `debian`.
   - Leave domain name empty.
 
 ![](figs/debian_install_5_configure_the_network.png)
