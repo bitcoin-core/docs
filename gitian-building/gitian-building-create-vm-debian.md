@@ -98,7 +98,7 @@ To select a different button, press `Tab`.
 ![](figs/debian_install_5_configure_the_network.png)
 ![](figs/debian_install_6_domain_name.png)
 
-- Choose a root password and enter it twice (remember it for later)
+- You can leave the root password empty. Otherwise, enter it twice and remember it for later.
 
 ![](figs/debian_install_6a_set_up_root_password.png)
 
@@ -165,28 +165,6 @@ To select a different button, press `Tab`.
 
 ![](figs/debian_install_22_finish_installation.png)
 
-
-After Installation
--------------------
-The next step in the guide involves logging in as root via SSH.
-SSH login for root users is disabled by default, so we'll enable that now.
-
-Login to the VM using username `root` and the root password you chose earlier.
-You'll be presented with a screen similar to this.
-
-![](figs/debian_root_login.png)
-
-Type:
-
-```
-sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-```
-and press enter. Then,
-```
-/etc/init.d/ssh restart
-```
-and enter to restart SSH. Logout by typing 'logout' and pressing 'enter'.
-
 Connecting to the VM
 ----------------------
 
@@ -194,14 +172,14 @@ After the VM has booted you can connect to it using SSH, and files can be copied
 Connect to `localhost`, port `22222` (or the port configured when installing the VM).
 On Windows you can use [putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [WinSCP](http://winscp.net/eng/index.php).
 
-For example, to connect as `root` from a Linux command prompt use
+For example, to connect as `gitianuser` from a Linux command prompt use
 
-    $ ssh root@localhost -p 22222
+    $ ssh gitianuser@localhost -p 22222
     The authenticity of host '[localhost]:22222 ([127.0.0.1]:22222)' can't be established.
     RSA key fingerprint is ae:f5:c8:9f:17:c6:c7:1b:c2:1b:12:31:1d:bb:d0:c7.
     Are you sure you want to continue connecting (yes/no)? yes
     Warning: Permanently added '[localhost]:22222' (RSA) to the list of known hosts.
-    root@localhost's password: (enter root password configured during install)
+    gitianuser@localhost's password: (enter gitianuser password configured during install)
 
     The programs included with the Debian GNU/Linux system are free software;
     the exact distribution terms for each program are described in the
@@ -211,4 +189,32 @@ For example, to connect as `root` from a Linux command prompt use
     permitted by applicable law.
     root@debian:~#
 
-Replace `root` with `gitianuser` to log in as user.
+Use `sudo` to execute commands as root.
+
+Optional - Easier login to the VM
+---------------------------------
+
+You'll need to generate an SSH key, e.g. by following the instructions under "Generating a new SSH key" [here](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+
+After that, login to the VM and enter:
+
+```bash
+mkdir .ssh
+```
+
+On your machine edit or create `~/.ssh/config` and add:
+
+```bash
+Host gitian
+    HostName localhost
+    Port 22222
+    User gitianuser
+```
+
+Open a new terminal tab and enter:
+
+```bash
+scp ~/.ssh/id_rsa.pub gitian:.ssh/authorized_keys
+```
+
+Next time you need to login to the VM, just use: `ssh gitian`
