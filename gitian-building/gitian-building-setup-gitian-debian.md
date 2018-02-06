@@ -12,17 +12,16 @@ Setting up Debian for Gitian building
 In this section we will be setting up the Debian installation for Gitian building.
 We assume that a user `gitianuser` was previously added.
 
-First we need to log in as `root` to set up dependencies and make sure that our
-user can use the sudo command. Type/paste the following in the terminal:
+First we need to set up dependencies. Type/paste the following in the terminal:
 
 ```bash
-apt-get install git ruby sudo apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make ubuntu-archive-keyring curl
-adduser gitianuser sudo
+sudo apt-get install git ruby apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make ubuntu-archive-keyring curl
 ```
 
 Then set up LXC and the rest with the following, which is a complex jumble of settings and workarounds:
 
 ```bash
+sudo -s
 # the version of lxc-start in Debian needs to run as root, so make sure
 # that the build script can execute it without providing a password
 echo "%sudo ALL=NOPASSWD: /usr/bin/lxc-start" > /etc/sudoers.d/gitian-lxc
@@ -44,6 +43,8 @@ reboot
 
 At the end Debian is rebooted to make sure that the changes take effect. The steps in this
 section only need to be performed once.
+
+**Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
 
 Installing Gitian
 ------------------
