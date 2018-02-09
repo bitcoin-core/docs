@@ -81,6 +81,7 @@ Clone the git repositories for bitcoin and Gitian.
 git clone https://github.com/devrandom/gitian-builder.git
 git clone https://github.com/bitcoin/bitcoin
 git clone https://github.com/bitcoin-core/gitian.sigs.git
+git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
 ```
 
 Setting up the Gitian image
