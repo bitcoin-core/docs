@@ -60,11 +60,11 @@ After creating the VM, we need to configure it.
 
 - Click `Ok` twice to save.
 
-Get the [Fedora 26 Netinstall Image](https://download.fedoraproject.org/pub/fedora/linux/releases/26/Workstation/x86_64/iso/Fedora-Workstation-netinst-x86_64-26-1.5.iso) (any resonably recent release should work as well, see [Fedora Workstation Download page](https://getfedora.org/en/workstation/download/)).
+Get the [Fedora Netinstall Image](https://download.fedoraproject.org/pub/fedora/linux/releases/27/Workstation/x86_64/iso/Fedora-Workstation-netinst-x86_64-27-1.6.iso) (other resonably recent release should work as well, see [Fedora Workstation Download page](https://getfedora.org/en/workstation/download/)).
 This DVD image can be [validated](https://getfedora.org/verify) using a SHA256 hashing tool, for example on
 Unixy OSes by entering the following in a terminal:
 
-    echo "f514040516dc512119aad6316746569b231e157724d4f257af76825c483e1598  Fedora-Workstation-netinst-x86_64-26-1.5.iso" | sha256sum -c
+    echo "18ef4a6f9f470b40bd0cdf21e6c8f5c43c28e3a2200dcc8578ec9da25a6b376b  Fedora-Workstation-netinst-x86_64-27-1.6.iso" | sha256sum -c
     # (must return OK)
 
 Replace `sha256sum` with `shasum` on OSX.
