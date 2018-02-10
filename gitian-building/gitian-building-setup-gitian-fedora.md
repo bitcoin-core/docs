@@ -12,22 +12,16 @@ Setting up Fedora for Gitian building
 In this section we will be setting up the Fedora installation for Gitian building.
 We assume that a user `gitianuser` was previously created and added to the `wheel` group.
 
-To repeat ths step, log in as `root` and type:
+First we need to set up dependencies. Type/paste the following in the terminal:
 
 ```bash
-usermod gitianuser -a -G wheel
-```
-
-Log in as `root` and set up the required dependencies.
-Type/paste the following in the terminal:
-
-```bash
-dnf install git python ruby apt-cacher-ng qemu dpkg debootstrap python-cheetah gnupg tar rsync wget curl lxc libvirt
+sudo dnf install git python ruby apt-cacher-ng qemu dpkg debootstrap python-cheetah gnupg tar rsync wget curl lxc libvirt
 ```
 
 Then set up LXC and the rest with the following, which is a complex jumble of settings and workarounds:
 
 ```bash
+sudo -s
 # Enable the apt-cacher-ng service
 systemctl enable apt-cacher-ng.service
 # the version of lxc-start in Fedora needs to run as root, so make sure
@@ -54,6 +48,8 @@ reboot
 
 At the end Fedora is rebooted to make sure that the changes take effect. The steps in this
 section only need to be performed once.
+
+**Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
 
 Installing Gitian
 ------------------

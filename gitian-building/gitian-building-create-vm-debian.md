@@ -189,7 +189,7 @@ For example, to connect as `gitianuser` from a Linux command prompt use
 
     Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
     permitted by applicable law.
-    root@debian:~#
+    gitianuser@debian:~$
 
 Use `sudo` to execute commands as root.
 
