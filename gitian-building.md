@@ -49,136 +49,68 @@ Please refer to the following documents to set up the operating systems and Giti
 | Setup virtual machine (optional)  | [Create Debian VirtualBox](./gitian-building/gitian-building-create-vm-debian.md) | [Create Fedora VirtualBox](./gitian-building/gitian-building-create-vm-fedora.md) |
 | Setup Gitian                      | [Setup Gitian on Debian](./gitian-building/gitian-building-setup-gitian-debian.md) | [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md) |
 
+Non-Debian / Ubuntu, Manual and Offline Building
+------------------------------------------------
+The instructions below use the automated script [gitian-build.sh](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.sh) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
 
-Getting and building the inputs
---------------------------------
+MacOS code signing
+------------------
+In order to sign builds for MacOS, you need to download the free SDK and extract a file. The steps are described [here](./gitian-building/gitian-building-mac-os-sdk.md). Alternatively, you can skip the OSX build by adding `--os=lw` below.
 
-At this point you have two options, you can either use the automated script (found in [https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.sh](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.sh), only works in Debian/Ubuntu) or you could manually do everything by following this guide.
-If you are using the automated script, then run it with the `--setup` command. Afterwards, run it with the `--build` command (example: `contrib/gitian-build.sh -b signer 0.15.0`). Otherwise ignore this.
-
-Follow the instructions in [https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md](https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md#fetch-and-create-inputs-first-time-or-when-dependency-versions-change)
-in the bitcoin repository under 'Fetch and create inputs' to install sources which require
-manual intervention. Also optionally follow the next step: 'Seed the Gitian sources cache
-and offline git repositories' which will fetch the remaining files required for building
-offline.
-
-Building Bitcoin Core
-----------------
-
-To build Bitcoin Core (for Linux, OS X and Windows) just follow the steps under 'perform
-Gitian builds' in [https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md](https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md#setup-and-perform-gitian-builds) in the bitcoin repository.
-
-This may take some time as it will build all the dependencies needed for each descriptor.
-These dependencies will be cached after a successful build to avoid rebuilding them when possible.
-
-At any time you can check the package installation and build progress with
+Initial Gitian Setup
+--------------------
+The `gitian-build.sh` script will checkout different release tags, so it's best to copy it:
 
 ```bash
-tail -f var/install.log
-tail -f var/build.log
+cp bitcoin/contrib/gitian-build.sh .
 ```
 
-Output from `gbuild` will look something like
-
-    Initialized empty Git repository in /home/gitianuser/gitian-builder/inputs/bitcoin/.git/
-    remote: Counting objects: 57959, done.
-    remote: Total 57959 (delta 0), reused 0 (delta 0), pack-reused 57958
-    Receiving objects: 100% (57959/57959), 53.76 MiB | 484.00 KiB/s, done.
-    Resolving deltas: 100% (41590/41590), done.
-    From https://github.com/bitcoin/bitcoin
-    ... (new tags, new branch etc)
-    --- Building for trusty amd64 ---
-    Stopping target if it is up
-    Making a new image copy
-    stdin: is not a tty
-    Starting target
-    Checking if target is up
-    Preparing build environment
-    Updating apt-get repository (log in var/install.log)
-    Installing additional packages (log in var/install.log)
-    Grabbing package manifest
-    stdin: is not a tty
-    Creating build script (var/build-script)
-    lxc-start: Connection refused - inotify event with no name (mask 32768)
-    Running build script (log in var/build.log)
-
-Building an alternative repository
------------------------------------
-
-If you want to do a test build of a pull on GitHub it can be useful to point
-the Gitian builder at an alternative repository, using the same descriptors
-and inputs.
-
-For example:
-```bash
-URL=https://github.com/laanwj/bitcoin.git
-COMMIT=2014_03_windows_unicode_path
-./bin/gbuild --commit bitcoin=${COMMIT} --url bitcoin=${URL} ../bitcoin/contrib/gitian-descriptors/gitian-linux.yml
-./bin/gbuild --commit bitcoin=${COMMIT} --url bitcoin=${URL} ../bitcoin/contrib/gitian-descriptors/gitian-win.yml
-./bin/gbuild --commit bitcoin=${COMMIT} --url bitcoin=${URL} ../bitcoin/contrib/gitian-descriptors/gitian-osx.yml
-```
-
-Building fully offline
------------------------
-
-For building fully offline including attaching signatures to unsigned builds, the detached-sigs repository
-and the bitcoin git repository with the desired tag must both be available locally, and then gbuild must be
-told where to find them. It also requires an apt-cacher-ng which is fully-populated but set to offline mode, or
-manually disabling gitian-builder's use of apt-get to update the VM build environment.
-
-To configure apt-cacher-ng as an offline cacher, you will need to first populate its cache with the relevant
-files. You must additionally patch target-bin/bootstrap-fixup to set its apt sources to something other than
-plain archive.ubuntu.com: us.archive.ubuntu.com works.
-
-So, if you use LXC:
-
-```bash
-export PATH="$PATH":/path/to/gitian-builder/libexec
-export USE_LXC=1
-cd /path/to/gitian-builder
-./libexec/make-clean-vm --suite trusty --arch amd64
-
-LXC_ARCH=amd64 LXC_SUITE=trusty on-target -u root apt-get update
-LXC_ARCH=amd64 LXC_SUITE=trusty on-target -u root \
-  -e DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
-  $( sed -ne '/^packages:/,/[^-] .*/ {/^- .*/{s/"//g;s/- //;p}}' ../bitcoin/contrib/gitian-descriptors/*|sort|uniq )
-LXC_ARCH=amd64 LXC_SUITE=trusty on-target -u root apt-get -q -y purge grub
-LXC_ARCH=amd64 LXC_SUITE=trusty on-target -u root -e DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
-```
-
-And then set offline mode for apt-cacher-ng:
+You only need to do this once:
 
 ```
-/etc/apt-cacher-ng/acng.conf
-[...]
-Offlinemode: 1
-[...]
-
-service apt-cacher-ng restart
+./gitian-build.sh --setup satoshi 0.16.0rc1
 ```
 
-Then when building, override the remote URLs that gbuild would otherwise pull from the Gitian descriptors::
-```bash
+Where `satoshi` is your Github name and `0.16.0rc1` is the most recent tag (without `v`). 
 
-cd /some/root/path/
-git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
+In order to sign gitian builds on your host machine, which has your PGP key, fork the gitian.sigs repository and clone it on your host machine:
 
-BTCPATH=/some/root/path/bitcoin
-SIGPATH=/some/root/path/bitcoin-detached-sigs
-
-./bin/gbuild --url bitcoin=${BTCPATH},signature=${SIGPATH} ../bitcoin/contrib/gitian-descriptors/gitian-win-signer.yml
+```
+git clone git@github.com:bitcoin-core/gitian.sigs.git
+git remote add satoshi git@github.com:satoshi/gitian.sigs.git
 ```
 
-Signing externally
--------------------
+Build binaries
+-----------------------------
+Windows and OSX have code signed binaries, but those won't be available until a few developers have gitian signed the non-codesigned binaries.
 
-If you want to do the PGP signing on another device, that's also possible; just define `SIGNER` as mentioned
-and follow the steps in the build process as normal.
+To build the most recent tag:
 
-    gpg: skipped "laanwj": secret key not available
+ `./gitian-build.sh --detach-sign --no-commit -b satoshi 0.16.0rc1`
 
-When you execute `gsign` you will get an error from GPG, which can be ignored. Copy the resulting `.assert` files
-in `gitian.sigs` to your signing machine and do
+To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU's you allocated to the VM plus one, and 5000 is a little bit less than then the MB's of RAM you allocated.
+
+If all went well, this produces a number of (uncommited) `.assert` files in the gitian.sigs repository.
+
+You need to copy these uncommited changes to your host machine, where you can sign them:
+
+```
+export NAME=satoshi
+gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sig 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
+gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sig 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
+gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sig 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
+```
+
+Make a PR (both the `.assert` and `.assert.sig` files) to the
+[bitcoin-core/gitian.sigs](https://github.com/bitcoin-core/gitian.sigs/) repository:
+
+```
+git checkout -b 0.16.0rc1-not-codesigned
+git commit -S -a -m "Add $NAME 0.16.0rc non-code signed signatures"
+git push --set-upstream $NAME 0.16.0rc1
+```
+
+You can also mail the files to Wladimir (laanwj@gmail.com) and he will commit them.
 
 ```bash
     gpg --detach-sign ${VERSION}-linux/${SIGNER}/bitcoin-linux-*-build.assert
@@ -191,9 +123,6 @@ You may have other .assert files as well (e.g. `signed` ones), in which case you
 This will create the `.sig` files that can be committed together with the `.assert` files to assert your
 Gitian build.
 
-Uploading signatures
----------------------
+ `./gitian-build.sh --detach-sign --nocommit -s satoshi 0.16.0rc1`
 
-After building and signing you can push your signatures (both the `.assert` and `.assert.sig` files) to the
-[bitcoin-core/gitian.sigs](https://github.com/bitcoin-core/gitian.sigs/) repository, or if that's not possible create a pull
-request. You can also mail the files to Wladimir (laanwj@gmail.com) and he will commit them.
+Make another pull request for these.
