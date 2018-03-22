@@ -94,12 +94,14 @@ This section will explain how to install Fedora on the newly created VM.
 ![](figs/fedora_install_2_summary.png)
 
 - Confirm by clicking on *Begin Installation*.
-- Choose a root password and enter it twice (remember it for later)
+- You can leave the root password empty. Otherwise, enter it twice and remember it for later.
 - Also, create a new user. Name the new user `gitianuser` (the full name doesn't matter, you can leave it empty)
 - Select *Make this user administrator* to add them to the wheel group.
 - Choose a user password and enter it twice (remember it for later)
 
 ![](figs/fedora_install_3_users.png)
+
+![](figs/fedora_install_4_users.png)
 
 - Complete the installation by clicking *Finish configuration*. Then wait for it to complete and select *Reboot*.
 - If the greeter asks you to install fedora, make sure to remove the ISO: In the running VirtualBox instance, select *Devices* > *Optical Drives* > *Remove disk from virtual drive*. Then reboot again.
@@ -111,22 +113,21 @@ You'll be presented with a screen similar to this.
 
 Connecting to the VM
 ----------------------
-The next step in the guide involves logging in as root via SSH.
 
 After the VM has booted you can connect to it using SSH, and files can be copied from and to the VM using a SFTP utility.
 Connect to `localhost`, port `22222` (or the port configured when installing the VM).
 On Windows you can use [putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) and [WinSCP](http://winscp.net/eng/index.php).
 
-For example, to connect as `root` from a Linux command prompt use
+For example, to connect as `gitianuser` from a Linux command prompt use
 
 ```
-$ ssh root@localhost -p 22222
+$ ssh gitianuser@localhost -p 22222
 The authenticity of host '[localhost]:22222 ([127.0.0.1]:22222)' can't be established.
 ECDSA key fingerprint is SHA256:Px5l4jnEItv44YnaESVlPMTu9gPYopIELKok99CjCvo.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '[localhost]:22222' (ECDSA) to the list of known hosts.
-root@localhost's password: (enter root password configured during install)
-[root@localhost ~]#
+gitianuser@localhost's password: (enter gitianuser password configured during install)
+[gitianuser@localhost ~]$
 ```
 
-Replace `root` with `gitianuser` to log in as user.
+Use `sudo` to execute commands as root.
