@@ -84,7 +84,8 @@ Setting up the Gitian image
 -------------------------
 
 Gitian needs a virtual image of the operating system to build in.
-Currently this is Ubuntu Trusty x86_64.
+Currently this is Ubuntu Bionic x86_64, however previous releases were built
+with Ubuntu Trusty x86_64.
 This image will be copied and used every time that a build is started to
 make sure that the build is deterministic.
 Creating the image will take a while, but only has to be done once.
@@ -93,8 +94,9 @@ Execute the following as user `gitianuser`:
 
 ```bash
 cd gitian-builder
-git checkout 686a00ad712e30ba3a7850c16ef32f650df5b5dc # This version seems to work better than master
-bin/make-base-vm --lxc --arch amd64 --suite trusty
+git checkout faa2dc2c2cc560bc0219db870490d88404f71370 # This version seems to work better than master
+bin/make-base-vm --lxc --arch amd64 --suite bionic # For releases after and including 0.17.0
+bin/make-base-vm --lxc --arch amd64 --suite trusty # For releases before 0.17.0
 ```
 
 There will be a lot of warnings printed during the build of the image. These can be ignored.
