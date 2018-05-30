@@ -123,6 +123,7 @@ You may have other .assert files as well (e.g. `signed` ones), in which case you
 This will create the `.sig` files that can be committed together with the `.assert` files to assert your
 Gitian build.
 
- `./gitian-build.sh --detach-sign --nocommit -s satoshi 0.16.0rc1`
+
+ `./gitian-build.sh --detach-sign -s satoshi 0.16.0rc1 --nocommit`
 
 Make another pull request for these.
