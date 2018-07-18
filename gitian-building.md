@@ -51,7 +51,7 @@ Please refer to the following documents to set up the operating systems and Giti
 
 Non-Debian / Ubuntu, Manual and Offline Building
 ------------------------------------------------
-The instructions below use the automated script [gitian-build.sh](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.sh) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
+The instructions below use the automated script [gitian-build.py](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.py) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
 
 MacOS code signing
 ------------------
@@ -59,16 +59,16 @@ In order to sign builds for MacOS, you need to download the free SDK and extract
 
 Initial Gitian Setup
 --------------------
-The `gitian-build.sh` script will checkout different release tags, so it's best to copy it:
+The `gitian-build.py` script will checkout different release tags, so it's best to copy it:
 
 ```bash
-cp bitcoin/contrib/gitian-build.sh .
+cp bitcoin/contrib/gitian-build.py .
 ```
 
 You only need to do this once:
 
 ```
-./gitian-build.sh --setup satoshi 0.16.0rc1
+./gitian-build.py --setup satoshi 0.16.0rc1
 ```
 
 Where `satoshi` is your Github name and `0.16.0rc1` is the most recent tag (without `v`). 
@@ -86,7 +86,7 @@ Windows and OSX have code signed binaries, but those won't be available until a 
 
 To build the most recent tag:
 
- `./gitian-build.sh --detach-sign --no-commit -b satoshi 0.16.0rc1`
+ `./gitian-build.py --detach-sign --no-commit -b satoshi 0.16.0rc1`
 
 To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU's you allocated to the VM plus one, and 5000 is a little bit less than then the MB's of RAM you allocated.
 
@@ -124,6 +124,6 @@ This will create the `.sig` files that can be committed together with the `.asse
 Gitian build.
 
 
- `./gitian-build.sh --detach-sign -s satoshi 0.16.0rc1 --nocommit`
+ `./gitian-build.py --detach-sign -s satoshi 0.16.0rc1 --nocommit`
 
 Make another pull request for these.
