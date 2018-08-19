@@ -32,7 +32,7 @@ In the VirtualBox GUI click "New" and choose the following parameters in the wiz
 
 ![](figs/create_vm_file_location_size.png)
 
-- File location and size: at least 40GB; as low as 20GB *may* be possible, but better to err on the safe side
+- File location and size: at least 40GB
 - Click `Create`
 
 After creating the VM, we need to configure it.
