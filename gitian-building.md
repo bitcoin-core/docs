@@ -96,9 +96,9 @@ You need to copy these uncommited changes to your host machine, where you can si
 
 ```
 export NAME=satoshi
-gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sig 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
-gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sig 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
-gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sig 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
+gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
+gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
+gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
 ```
 
 Make a PR (both the `.assert` and `.assert.sig` files) to the
