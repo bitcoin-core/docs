@@ -40,7 +40,7 @@ Alternatively, you can install one of the supported operating systems in a virtu
 Any kind of virtualization can be used, for example:
 - [VirtualBox](https://www.virtualbox.org/) (covered by this guide)
 - [KVM](http://www.linux-kvm.org/page/Main_Page)
-- [LXC](https://linuxcontainers.org/), see also [Gitian host docker container](https://github.com/gdm85/tenku/tree/master/docker/gitian-bitcoin-host/README.md).
+- [LXC](https://linuxcontainers.org/)
 
 Please refer to the following documents to set up the operating systems and Gitian.
 
@@ -48,6 +48,10 @@ Please refer to the following documents to set up the operating systems and Giti
 |-----------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | Setup virtual machine (optional)  | [Create Debian VirtualBox](./gitian-building/gitian-building-create-vm-debian.md) | [Create Fedora VirtualBox](./gitian-building/gitian-building-create-vm-fedora.md) |
 | Setup Gitian                      | [Setup Gitian on Debian](./gitian-building/gitian-building-setup-gitian-debian.md) | [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md) |
+
+Note that a version of `lxc-execute` higher or equal to 2.1.1 is required.
+You can check the version with `lxc-execute --version`.
+On Debian you might have to compile a suitable version of lxc or you can use Ubuntu 18.04 or higher instead of Debian as the host.
 
 Non-Debian / Ubuntu, Manual and Offline Building
 ------------------------------------------------
