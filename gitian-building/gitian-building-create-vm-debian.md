@@ -60,11 +60,11 @@ After creating the VM, we need to configure it.
 
 - Click `Ok` twice to save.
 
-Get the [Debian 8.x net installer](https://cdimage.debian.org/cdimage/archive/8.10.0/amd64/iso-cd/debian-8.10.0-amd64-netinst.iso) (a more recent minor version should also work, see also [Debian Network installation](https://www.debian.org/CD/netinst/)).
+Get the [Debian 9.x net installer](https://cdimage.debian.org/debian-cd/9.5.0/amd64/iso-cd/debian-9.5.0-amd64-netinst.iso) (a more recent minor version should also work, see also [Debian Network installation](https://www.debian.org/CD/netinst/)).
 This DVD image can be [validated](https://www.debian.org/CD/verify) using a SHA256 hashing tool, for example on
 Unixy OSes by entering the following in a terminal:
 
-    echo "896cc42998edf65f1db4eba83581941fb2a584f2214976432b841af96b17ccda  debian-8.10.0-amd64-netinst.iso" | sha256sum -c
+    echo "1f97a4b8dee7c3def5cd8215ff01b9edef27c901b28fa8b1ef4f022eff7c36c2  debian-9.5.0-amd64-netinst.iso" | sha256sum -c
     # (must return OK)
 
 Replace `sha256sum` with `shasum` on OSX.
@@ -136,6 +136,10 @@ To select a different button, press `Tab`.
 
 ![](figs/debian_install_14_finish.png)
 ![](figs/debian_install_15_write_changes.png)
+
+  - Answer NO to the question "Scan another CD or DVD?"
+
+![](figs/debian_install_15a_scan_another_CD.png)
 
 - The base system will be installed, this will take a minute or so
 - Choose a mirror (any will do)
