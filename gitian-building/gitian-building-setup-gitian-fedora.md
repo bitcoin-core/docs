@@ -43,6 +43,7 @@ chmod +x /etc/rc.d/rc.local
 echo 'export USE_LXC=1' >> /home/gitianuser/.bash_profile
 echo 'export GITIAN_HOST_IP=10.0.3.2' >> /home/gitianuser/.bash_profile
 echo 'export LXC_GUEST_IP=10.0.3.5' >> /home/gitianuser/.bash_profile
+[ -f /etc/default/lxc-net ] && sed -i 's/USE_LXC_BRIDGE="true"/USE_LXC_BRIDGE="false"/' /etc/default/lxc-net
 reboot
 ```
 
@@ -80,4 +81,24 @@ git clone https://github.com/bitcoin-core/gitian.sigs.git
 git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
 ```
 
-The Gitian builder host now is ready.
+Setting up the Gitian image
+-------------------------
+
+Gitian needs a virtual image of the operating system to build in.
+Currently this is Ubuntu Bionic x86_64 and the script gitian-build.py setup it for you.
+For previous releases of bitcoin the image was Trusty x86_64, so if you want to build bitcoin 0.16.x or earlier you have to create it now manually.
+This image will be copied and used every time that a build is started to
+make sure that the build is deterministic.
+Creating the image will take a while, but only has to be done once.
+
+Execute the following as user `gitianuser`:
+
+```bash
+cd gitian-builder
+git checkout 686a00ad712e30ba3a7850c16ef32f650df5b5dc # This version seems to work better than master
+bin/make-base-vm --lxc --arch amd64 --suite trusty
+```
+
+There will be a lot of warnings printed during the build of the image. These can be ignored.
+
+**Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
