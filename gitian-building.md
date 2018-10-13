@@ -86,24 +86,53 @@ git remote add satoshi git@github.com:satoshi/gitian.sigs.git
 
 Build binaries
 -----------------------------
-Windows and OSX have code signed binaries, but those won't be available until a few developers have gitian signed the non-codesigned binaries.
+### What is code signing?
+Before building the binaries, let's explain code signing.
 
-To build the most recent tag:
+Windows and OSX have code signed binaries, with private keys held by [Bitcoin Core Signing Association](https://bitcoincorecodesigning.org). Since you don't have those keys, you are not able to sign the binaries. 
 
- `./gitian-build.py --detach-sign --no-commit -b satoshi 0.16.0rc1`
+This is done, because both Microsoft and Apple enforce signed binaries.
+
+### Bitcoin Core process
+The process is therefore as follows:
+
+1. people deterministically build bitcoin without the codesigning and gitian-sign it
+2. Bitcoin Core Signing Association codesigns the binaries, after there is a few gitian-signs
+3. the codesignatures are then added to https://github.com/bitcoin-core/bitcoin-detached-sigs (note the different branches for each version)
+4. other people can then codesign with those signatures, and then gitian-sign those binaries
+
+Note that there is two separate, orthogonal concepts of "signing" - one is **gitian signing**, which is developers confirming, that the code on github produces the binary; and other is **codesigning**, which is signing the binary with Apple/Microsoft-provided key. 
+
+You as a gitian signer can do the gitian signing - that is, sign the `.assert` files; if the binaries are already codesigned by Bitcoin Core Signing Association, you can attach their signatures; and then you can also check if the result of **that** produces the same binary and also sign the new `.assert`.
+
+So the result of all this, from you, will be (for OS X and Windows) assert for non-codesigned binaries, then gpg signature for that, then assert for code-signed binaries and then gpg signature for that.
+
+### Build binaries
+To build the most recent tag, do:
+
+ `./gitian-build.py --detach-sign --build --no-commit satoshi 0.16.0rc1`
 
 To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU's you allocated to the VM plus one, and 5000 is a little bit less than then the MB's of RAM you allocated.
 
 If all went well, this produces a number of (uncommited) `.assert` files in the gitian.sigs repository.
 
-You need to copy these uncommited changes to your host machine, where you can sign them:
+### Sign asserts
+Copy these uncommited changes to your host machine, where you can sign them:
 
 ```
-export NAME=satoshi
-gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
-gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
-gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
+#on host machine
+NAME=satoshi
+VERSION=0.17.0
+for FILENAME in $( ls $VERSION-*/$NAME/*.assert )
+do
+gpg --output $FNAME.sig --detach-sign $FNAME 
+done 
 ```
+
+This will create the `.sig` files that can be committed together with the `.assert` files to assert your
+Gitian build.
+
+### Make a PR
 
 Make a PR (both the `.assert` and `.assert.sig` files) to the
 [bitcoin-core/gitian.sigs](https://github.com/bitcoin-core/gitian.sigs/) repository:
@@ -116,18 +145,29 @@ git push --set-upstream $NAME 0.16.0rc1
 
 You can also mail the files to Wladimir (laanwj@gmail.com) and he will commit them.
 
-```bash
-    gpg --detach-sign ${VERSION}-linux/${SIGNER}/bitcoin-linux-*-build.assert
-    gpg --detach-sign ${VERSION}-win-unsigned/${SIGNER}/bitcoin-win-*-build.assert
-    gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/bitcoin-osx-*-build.assert
+### Is the Bitcoin Core version code-signed already?
+To know if there already is a detached signature, go to tree in bitcoin-detached-sigs repo - for example, https://github.com/bitcoin-core/bitcoin-detached-sigs/tree/v0.16.3 .
+
+If the Bitcoin Core is on the website, it is most probably already codesigned.
+
+### Make codesigned binaries, make PR
+
+If there is a detached signature already, you can also make the codesigned binaries.
+
+ `./gitian-build.py --detach-sign --sign --no-commit satoshi 0.16.0rc1`
+ 
+Note that the `--sign` option does not actually sign anything; it attaches the detached signatures.
+
+This will create another set of assert files (e.g. `signed` ones), and you should sign them too.
+
 ```
-
-You may have other .assert files as well (e.g. `signed` ones), in which case you should sign them too. You can see all of them by doing `ls ${VERSION}-*/${SIGNER}`.
-
-This will create the `.sig` files that can be committed together with the `.assert` files to assert your
-Gitian build.
-
-
- `./gitian-build.py --detach-sign -s satoshi 0.16.0rc1 --nocommit`
+#on host machine
+NAME=satoshi
+VERSION=0.17.0
+for FILENAME in $( ls $VERSION-*-signed/$NAME/*.assert )
+do
+gpg --output $FNAME.sig --detach-sign $FNAME 
+done 
+```
 
 Make another pull request for these.
