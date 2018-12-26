@@ -1,6 +1,12 @@
 Gitian building Mac OS SDK
 ==========================
 
+- [Gitian building Mac OS SDK](#gitian-building-mac-os-sdk)
+  - [MacOS host](#macos-host)
+  - [Non-MacOS host:](#non-macos-host)
+  - [Copy SDK to Gitian VM:](#copy-sdk-to-gitian-vm)
+  - [Troubleshooting](#troubleshooting)
+
 On the host machine, register for a free Apple [developer account](https://developer.apple.com/register/), then download the SDK [here](https://developer.apple.com/devcenter/download.action?path=/Developer_Tools/Xcode_7.3.1/Xcode_7.3.1.dmg).
 
 MacOS host
