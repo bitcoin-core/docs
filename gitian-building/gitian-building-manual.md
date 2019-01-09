@@ -1,8 +1,13 @@
 Getting and building the inputs
 --------------------------------
 
+- [Getting and building the inputs](#getting-and-building-the-inputs)
+- [Building Bitcoin Core](#building-bitcoin-core)
+- [Building an alternative repository](#building-an-alternative-repository)
+- [Building fully offline](#building-fully-offline)
+
 At this point you have two options, you can either use the automated script (found in [https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.py](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.py), only works in Debian/Ubuntu) or you could manually do everything by following this guide.
-If you are using the automated script, then run it with the `--setup` command. Afterwards, run it with the `--build` command (example: `contrib/gitian-build.py -b signer 0.15.0`). Otherwise ignore this.
+If you are using the automated script, then run it with the `--setup` command. Afterwards, run it with the `--build` command (example: `contrib/gitian-build.py -b signer 0.17.0`). Otherwise ignore this.
 
 Follow the instructions in [https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md](https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md#fetch-and-create-inputs-first-time-or-when-dependency-versions-change)
 in the bitcoin repository under 'Fetch and create inputs' to install sources which require

@@ -1,6 +1,12 @@
 Gitian building Mac OS SDK
 ==========================
 
+- [Gitian building Mac OS SDK](#gitian-building-mac-os-sdk)
+  - [MacOS host](#macos-host)
+  - [Non-MacOS host:](#non-macos-host)
+  - [Copy SDK to Gitian VM:](#copy-sdk-to-gitian-vm)
+  - [Troubleshooting](#troubleshooting)
+
 On the host machine, register for a free Apple [developer account](https://developer.apple.com/register/), then download the SDK [here](https://developer.apple.com/devcenter/download.action?path=/Developer_Tools/Xcode_7.3.1/Xcode_7.3.1.dmg).
 
 MacOS host
@@ -40,15 +46,10 @@ Copy SDK to Gitian VM:
 Copy it to the Gitian VM and clean up, e.g.:
 
 ```bash
-scp MacOSX10.11.sdk.tar.gz gitian:
+# Create inputs folder and copy SDK
+ssh gitian "mkdir -p gitian-builder/inputs" && scp MacOSX10.11.sdk.tar.gz gitian:gitian-builder/inputs
+# Cleanup
 rm MacOSX10.11.sdk.tar.gz
-```
-
-Login to the VM and:
-
-```bash
-mkdir -p gitian-builder/inputs
-mv MacOSX10.11.sdk.tar.gz gitian-builder/inputs
 ```
 
 Troubleshooting
