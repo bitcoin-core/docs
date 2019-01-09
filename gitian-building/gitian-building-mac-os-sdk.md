@@ -46,15 +46,10 @@ Copy SDK to Gitian VM:
 Copy it to the Gitian VM and clean up, e.g.:
 
 ```bash
-scp MacOSX10.11.sdk.tar.gz gitian:
+# Create inputs folder and copy SDK
+ssh gitian "mkdir -p gitian-builder/inputs" && scp MacOSX10.11.sdk.tar.gz gitian:gitian-builder/inputs
+# Cleanup
 rm MacOSX10.11.sdk.tar.gz
-```
-
-Login to the VM and:
-
-```bash
-mkdir -p gitian-builder/inputs
-mv MacOSX10.11.sdk.tar.gz gitian-builder/inputs
 ```
 
 Troubleshooting
