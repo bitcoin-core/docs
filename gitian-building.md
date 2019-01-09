@@ -47,15 +47,13 @@ Please refer to the following documents to set up the operating systems and Giti
 
 | Create VM | Debian                                                                                      | Fedora                                                                                      | Ubuntu                                                                                   |
 |-----------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| Create virtual machine with VirtualBox (optional)    | [Create Debian](./gitian-building/gitian-building-create-vm-debian.md)           | [Create Fedora](./gitian-building/gitian-building-create-vm-fedora.md)           | [Create Bionic](./gitian-building/gitian-building-create-vm-ubuntu-bionic.md) |
-| Create virtual machine with VMware Player (optional) | [Create Debian](./gitian-building/gitian-building-create-vm-vmware-debian.md) | [Create Fedora](./gitian-building/gitian-building-create-vm-vmware-fedora.md) | [Create Bionic](./gitian-building/gitian-building-create-vm-vmware-ubuntu-bionic.md) |
-
-| Setup VM | Debian                                                                                      | Fedora                                                                                      | Ubuntu                                                                                   |
-|-----------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
 | Setup virtual machine with VirtualBox (optional)    | [Create Debian VM](./gitian-building/gitian-building-create-vm-debian.md)           | [Create Fedora VM](./gitian-building/gitian-building-create-vm-fedora.md)           | [Create Bionic VM](./gitian-building/gitian-building-create-vm-ubuntu-bionic.md) |
 | Setup virtual machine with VMware Player (optional) | [Create Debian VM](./gitian-building/gitian-building-create-vm-vmware-debian.md) | [Create Fedora VM](./gitian-building/gitian-building-create-vm-vmware-fedora.md) | [Create Bionic VM](./gitian-building/gitian-building-create-vm-ubuntu-bionic.md) |
+
+
+| | Debian                                                                                      | Fedora                                                                                      | Ubuntu                                                                                   |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
 | Setup Gitian                                        | [Setup Gitian on Debian](./gitian-building/gitian-building-setup-gitian-debian.md)          | [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md)          | [Setup Gitian on Bionic](./gitian-building/gitian-building-setup-gitian-bionic.md)       |
-| Setup Gitian (trusty) (old)                                       | [Setup Gitian on Debian (old)](./gitian-building/gitian-building-setup-gitian-debian.md)          | [Setup Gitian on Fedora (old)](./gitian-building/gitian-building-setup-gitian-fedora.md)          | ~~Setup Gitian on trusty (old)~~ (_obsolete_)      |
 
 
 Note that a version of `lxc-execute` higher or equal to 2.1.1 is required.
