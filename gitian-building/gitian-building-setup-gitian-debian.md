@@ -29,7 +29,7 @@ echo "%sudo ALL=NOPASSWD: /usr/bin/lxc-execute" >> /etc/sudoers.d/gitian-lxc
 # make /etc/rc.local script that sets up bridge between guest and host
 echo '#!/bin/sh -e' > /etc/rc.local
 echo 'brctl addbr br0' >> /etc/rc.local
-echo 'ip addr add 10.0.3.2/24 broadcast 10.0.3.255 dev br0' >> /etc/rc.local
+echo 'ip addr add 10.0.3.1/24 broadcast 10.0.3.255 dev br0' >> /etc/rc.local
 echo 'ip link set br0 up' >> /etc/rc.local
 echo 'firewall-cmd --zone=trusted --add-interface=br0' >> /etc/rc.local
 echo 'exit 0' >> /etc/rc.local
@@ -37,7 +37,7 @@ chmod +x /etc/rc.local
 # make sure that USE_LXC is always set when logging in as gitianuser,
 # and configure LXC IP addresses
 echo 'export USE_LXC=1' >> /home/gitianuser/.profile
-echo 'export GITIAN_HOST_IP=10.0.3.2' >> /home/gitianuser/.profile
+echo 'export GITIAN_HOST_IP=10.0.3.1' >> /home/gitianuser/.profile
 echo 'export LXC_GUEST_IP=10.0.3.5' >> /home/gitianuser/.profile
 [ -f /etc/default/lxc-net ] && sed -i 's/USE_LXC_BRIDGE="true"/USE_LXC_BRIDGE="false"/' /etc/default/lxc-net
 reboot
@@ -81,8 +81,8 @@ Setting up the Gitian image
 -------------------------
 
 Gitian needs a virtual image of the operating system to build in.
-Currently this is Ubuntu Bionic x86_64 and the script gitian-build.py setup it for you.
-For previous releases of bitcoin the image was Trusty x86_64, so if you want to build bitcoin 0.16.x or earlier you have to create it now manually.
+Currently this is Ubuntu Bionic x86_64, however previous releases were built
+with Ubuntu Trusty x86_64.
 This image will be copied and used every time that a build is started to
 make sure that the build is deterministic.
 Creating the image will take a while, but only has to be done once.
@@ -91,7 +91,8 @@ Execute the following as user `gitianuser`:
 
 ```bash
 cd gitian-builder
-bin/make-base-vm --lxc --arch amd64 --suite trusty
+bin/make-base-vm --lxc --arch amd64 --suite bionic # For releases after and including 0.17.0
+bin/make-base-vm --lxc --arch amd64 --suite trusty # For releases before 0.17.0
 ```
 
 There will be a lot of warnings printed during the build of the image. These can be ignored.
