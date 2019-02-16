@@ -1,35 +1,35 @@
 Table of Contents
 ------------------
 
-- [Setting up Debian for Gitian building](#setting-up-debian-for-gitian-building)
+- [Setting up Ubuntu for Gitian building](#setting-up-ubuntu-for-gitian-building)
 - [Installing Gitian](#installing-gitian)
 - [Setting up the Gitian image](#setting-up-the-gitian-image)
 
 
-Setting up Debian for Gitian building
+Setting up Ubuntu for Gitian building
 --------------------------------------
 
-In this section we will be setting up the Debian installation for Gitian building.
+In this section we will be setting up the Ubuntu installation for Gitian building.
 We assume that a user `gitianuser` was previously added.
 
 First we need to set up dependencies. Type/paste the following in the terminal:
 
 ```bash
-sudo apt-get install git ruby apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make ubuntu-archive-keyring curl firewalld
+sudo apt-get install git ruby apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make curl firewalld
 ```
 
 Then set up LXC and the rest with the following, which is a complex jumble of settings and workarounds:
 
 ```bash
 sudo -s
-# the version of lxc-start in Debian needs to run as root, so make sure
+# the version of lxc-start in Ubuntu needs to run as root, so make sure
 # that the build script can execute it without providing a password
 echo "%sudo ALL=NOPASSWD: /usr/bin/lxc-start" > /etc/sudoers.d/gitian-lxc
 echo "%sudo ALL=NOPASSWD: /usr/bin/lxc-execute" >> /etc/sudoers.d/gitian-lxc
 # make /etc/rc.local script that sets up bridge between guest and host
 echo '#!/bin/sh -e' > /etc/rc.local
 echo 'brctl addbr br0' >> /etc/rc.local
-echo 'ip addr add 10.0.3.1/24 broadcast 10.0.3.255 dev br0' >> /etc/rc.local
+echo 'ip addr add 10.0.3.2/24 broadcast 10.0.3.255 dev br0' >> /etc/rc.local
 echo 'ip link set br0 up' >> /etc/rc.local
 echo 'firewall-cmd --zone=trusted --add-interface=br0' >> /etc/rc.local
 echo 'exit 0' >> /etc/rc.local
@@ -37,16 +37,16 @@ chmod +x /etc/rc.local
 # make sure that USE_LXC is always set when logging in as gitianuser,
 # and configure LXC IP addresses
 echo 'export USE_LXC=1' >> /home/gitianuser/.profile
-echo 'export GITIAN_HOST_IP=10.0.3.1' >> /home/gitianuser/.profile
+echo 'export GITIAN_HOST_IP=10.0.3.2' >> /home/gitianuser/.profile
 echo 'export LXC_GUEST_IP=10.0.3.5' >> /home/gitianuser/.profile
 [ -f /etc/default/lxc-net ] && sed -i 's/USE_LXC_BRIDGE="true"/USE_LXC_BRIDGE="false"/' /etc/default/lxc-net
 reboot
 ```
 
-At the end Debian is rebooted to make sure that the changes take effect. The steps in this
+At the end Ubuntu is rebooted to make sure that the changes take effect. The steps in this
 section only need to be performed once.
 
-**Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
+**Note**: When sudo asks for a password, enter the password for the user `gitianuser`.
 
 Installing Gitian
 ------------------
@@ -54,7 +54,7 @@ Installing Gitian
 Re-login as the user `gitianuser` that was created during installation.
 The rest of the steps in this guide will be performed as that user.
 
-There is no `python-vm-builder` package in Debian, so we need to install it from source ourselves,
+There is no `python-vm-builder` package in Ubuntu, so we need to install it from source ourselves,
 
 ```bash
 wget http://archive.ubuntu.com/ubuntu/pool/universe/v/vm-builder/vm-builder_0.12.4+bzr494.orig.tar.gz
@@ -66,7 +66,7 @@ sudo python setup.py install
 cd ..
 ```
 
-**Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
+**Note**: When sudo asks for a password, enter the password for the user `gitianuser`.
 
 Clone the git repositories for bitcoin and Gitian.
 
@@ -81,8 +81,8 @@ Setting up the Gitian image
 -------------------------
 
 Gitian needs a virtual image of the operating system to build in.
-Currently this is Ubuntu Bionic x86_64, however previous releases were built
-with Ubuntu Trusty x86_64.
+Currently this is Ubuntu Bionic x86_64 and the script gitian-build.py setup it for you.
+For previous releases of bitcoin the image was Trusty x86_64, so if you want to build bitcoin 0.16.x or earlier you have to create it now manually.
 This image will be copied and used every time that a build is started to
 make sure that the build is deterministic.
 Creating the image will take a while, but only has to be done once.
@@ -91,8 +91,7 @@ Execute the following as user `gitianuser`:
 
 ```bash
 cd gitian-builder
-bin/make-base-vm --lxc --arch amd64 --suite bionic # For releases after and including 0.17.0
-bin/make-base-vm --lxc --arch amd64 --suite trusty # For releases before 0.17.0
+bin/make-base-vm --lxc --arch amd64 --suite trusty
 ```
 
 There will be a lot of warnings printed during the build of the image. These can be ignored.

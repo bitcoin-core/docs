@@ -44,10 +44,10 @@ Any kind of virtualization can be used, for example:
 
 Please refer to the following documents to set up the operating systems and Gitian.
 
-|                                   | Debian                                                                             | Fedora                                                                             |
-|-----------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| Setup virtual machine (optional)  | [Create Debian VirtualBox](./gitian-building/gitian-building-create-vm-debian.md) | [Create Fedora VirtualBox](./gitian-building/gitian-building-create-vm-fedora.md) |
-| Setup Gitian                      | [Setup Gitian on Debian](./gitian-building/gitian-building-setup-gitian-debian.md) | [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md) |
+|                     | Ubuntu                                                                             | Debian                                                                             | Fedora                                                                             |
+|---------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| Setup VM (optional) | [Create Ubuntu VirtualBox](./gitian-building/gitian-building-create-vm-ubuntu.md)  | [Create Debian VirtualBox](./gitian-building/gitian-building-create-vm-debian.md)  | [Create Fedora VirtualBox](./gitian-building/gitian-building-create-vm-fedora.md)  |
+| Setup Gitian        | [Setup Gitian on Ubuntu](./gitian-building/gitian-building-setup-gitian-ubuntu.md) | [Setup Gitian on Debian](./gitian-building/gitian-building-setup-gitian-debian.md) | [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md) |
 
 Note that a version of `lxc-execute` higher or equal to 2.1.1 is required.
 You can check the version with `lxc-execute --version`.
@@ -96,13 +96,22 @@ To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is t
 
 If all went well, this produces a number of (uncommited) `.assert` files in the gitian.sigs repository.
 
-You need to copy these uncommited changes to your host machine, where you can sign them:
+You need to copy these uncommited changes to your host machine:
 
 ```
 export NAME=satoshi
-gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
-gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
-gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
+cd gitian.sigs
+scp -r gitian:gitian.sigs/0.16.0rc1-linux/$NAME/ 0.16.0rc1-linux/
+scp -r gitian:gitian.sigs/0.16.0rc1-osx-unsigned/$NAME/ 0.16.0rc1-osx-unsigned/
+scp -r gitian:gitian.sigs/0.16.0rc1-win-unsigned/$NAME/ 0.16.0rc1-win-unsigned/
+```
+
+Then you can sign them:
+
+```
+gpg --output 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
+gpg --output 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
+gpg --output 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
 ```
 
 Make a PR (both the `.assert` and `.assert.sig` files) to the
@@ -128,6 +137,6 @@ This will create the `.sig` files that can be committed together with the `.asse
 Gitian build.
 
 
- `./gitian-build.py --detach-sign -s satoshi 0.16.0rc1 --nocommit`
+ `./gitian-build.py --detach-sign -s satoshi 0.16.0rc1 --no-commit`
 
 Make another pull request for these.
