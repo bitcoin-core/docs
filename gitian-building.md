@@ -80,8 +80,9 @@ Where `satoshi` is your Github name and `0.16.0rc1` is the most recent tag (with
 In order to sign gitian builds on your host machine, which has your PGP key, fork the gitian.sigs repository and clone it on your host machine:
 
 ```
+export NAME=satoshi
 git clone git@github.com:bitcoin-core/gitian.sigs.git
-git remote add satoshi git@github.com:satoshi/gitian.sigs.git
+git remote add $NAME git@github.com:$NAME/gitian.sigs.git
 ```
 
 Build binaries
@@ -89,8 +90,11 @@ Build binaries
 Windows and OSX have code signed binaries, but those won't be available until a few developers have gitian signed the non-codesigned binaries.
 
 To build the most recent tag:
-
- `./gitian-build.py --detach-sign --no-commit -b satoshi 0.16.0rc1`
+```
+ export NAME=satoshi
+ export VERSION=0.18.0rc2
+ ./gitian-build.py --detach-sign --no-commit -b $NAME $VERSION
+```
 
 To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU's you allocated to the VM plus one, and 5000 is a little bit less than then the MB's of RAM you allocated.
 
@@ -99,35 +103,34 @@ If all went well, this produces a number of (uncommited) `.assert` files in the 
 You need to copy these uncommited changes to your host machine, where you can sign them:
 
 ```
-export NAME=satoshi
-gpg --output $VERSION-linux/$NAME/bitcoin-linux-0.16-build.assert.sig --detach-sign 0.16.0rc1-linux/$NAME/bitcoin-linux-0.16-build.assert 
-gpg --output $VERSION-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert.sig --detach-sign 0.16.0rc1-osx-unsigned/$NAME/bitcoin-osx-0.16-build.assert 
-gpg --output $VERSION-win-unsigned/$NAME/bitcoin-win-0.16-build.assert.sig --detach-sign 0.16.0rc1-win-unsigned/$NAME/bitcoin-win-0.16-build.assert 
+gpg --output ${VERSION}-linux/${NAME}/bitcoin-linux-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-linux/$NAME/bitcoin-linux-${VERSION%\.*}-build.assert 
+gpg --output ${VERSION}-osx-unsigned/$NAME/bitcoin-osx-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-osx-unsigned/$NAME/bitcoin-osx-${VERSION%\.*}-build.assert 
+gpg --output ${VERSION}-win-unsigned/$NAME/bitcoin-win-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-win-unsigned/$NAME/bitcoin-win-${VERSION%\.*}-build.assert 
 ```
 
 Make a PR (both the `.assert` and `.assert.sig` files) to the
 [bitcoin-core/gitian.sigs](https://github.com/bitcoin-core/gitian.sigs/) repository:
 
 ```
-git checkout -b 0.16.0rc1-not-codesigned
-git commit -S -a -m "Add $NAME 0.16.0rc non-code signed signatures"
-git push --set-upstream $NAME 0.16.0rc1
+git checkout -b ${VERSION}-not-codesigned
+git commit -S -a -m "Add $NAME $VERSION non-code signed signatures"
+git push --set-upstream $NAME $VERSION-not-codesigned
 ```
 
 You can also mail the files to Wladimir (laanwj@gmail.com) and he will commit them.
 
 ```bash
-    gpg --detach-sign ${VERSION}-linux/${SIGNER}/bitcoin-linux-*-build.assert
-    gpg --detach-sign ${VERSION}-win-unsigned/${SIGNER}/bitcoin-win-*-build.assert
-    gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/bitcoin-osx-*-build.assert
+    gpg --detach-sign ${VERSION}-linux/${NAME}/bitcoin-linux-*-build.assert
+    gpg --detach-sign ${VERSION}-win-unsigned/${NAME}/bitcoin-win-*-build.assert
+    gpg --detach-sign ${VERSION}-osx-unsigned/${NAME}/bitcoin-osx-*-build.assert
 ```
 
-You may have other .assert files as well (e.g. `signed` ones), in which case you should sign them too. You can see all of them by doing `ls ${VERSION}-*/${SIGNER}`.
+You may have other .assert files as well (e.g. `signed` ones), in which case you should sign them too. You can see all of them by doing `ls ${VERSION}-*/${NAME}`.
 
 This will create the `.sig` files that can be committed together with the `.assert` files to assert your
 Gitian build.
 
 
- `./gitian-build.py --detach-sign -s satoshi 0.16.0rc1 --nocommit`
+ `./gitian-build.py --detach-sign -s $NAME $VERSION --nocommit`
 
 Make another pull request for these.
