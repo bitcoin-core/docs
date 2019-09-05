@@ -17,15 +17,6 @@ More independent Gitian builders are needed, which is why this guide exists.
 It is preferred you follow these steps yourself instead of using someone else's
 VM image to avoid 'contaminating' the build.
 
-Table of Contents
-------------------
-
-- [Preparing the Gitian builder host](#preparing-the-gitian-builder-host)
-- [Getting and building the inputs](#getting-and-building-the-inputs)
-- [Building Bitcoin Core](#building-bitcoin-core)
-- [Building an alternative repository](#building-an-alternative-repository)
-- [Signing externally](#signing-externally)
-- [Uploading signatures](#uploading-signatures)
 
 Preparing the Gitian builder host
 ---------------------------------
@@ -96,7 +87,7 @@ To build the most recent tag:
  ./gitian-build.py --detach-sign --no-commit -b $NAME $VERSION
 ```
 
-To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU's you allocated to the VM plus one, and 5000 is a little bit less than then the MB's of RAM you allocated.
+To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU cores you allocated to the VM plus one, and 5000 is a little bit less than then the MBs of RAM you allocated.
 
 If all went well, this produces a number of (uncommited) `.assert` files in the gitian.sigs repository.
 
