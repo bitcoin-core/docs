@@ -63,10 +63,8 @@ cp bitcoin/contrib/gitian-build.py .
 You only need to do this once:
 
 ```
-./gitian-build.py --setup satoshi 0.16.0rc1
+./gitian-build.py --setup
 ```
-
-Where `satoshi` is your Github name and `0.16.0rc1` is the most recent tag (without `v`). 
 
 In order to sign gitian builds on your host machine, which has your PGP key, fork the gitian.sigs repository and clone it on your host machine:
 
@@ -75,6 +73,8 @@ export NAME=satoshi
 git clone git@github.com:bitcoin-core/gitian.sigs.git
 git remote add $NAME git@github.com:$NAME/gitian.sigs.git
 ```
+
+Where `satoshi` is your GitHub name.
 
 Build binaries
 -----------------------------
@@ -87,16 +87,18 @@ To build the most recent tag:
  ./gitian-build.py --detach-sign --no-commit -b $NAME $VERSION
 ```
 
-To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU cores you allocated to the VM plus one, and 5000 is a little bit less than then the MBs of RAM you allocated.
+Where `0.18.0rc2` is the most recent tag (without `v`).
+
+To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU cores you allocated to the VM plus one, and `5000` is a little bit less than the MBs of RAM you allocated.
 
 If all went well, this produces a number of (uncommited) `.assert` files in the gitian.sigs repository.
 
 You need to copy these uncommited changes to your host machine, where you can sign them:
 
 ```
-gpg --output ${VERSION}-linux/${NAME}/bitcoin-linux-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-linux/$NAME/bitcoin-linux-${VERSION%\.*}-build.assert 
-gpg --output ${VERSION}-osx-unsigned/$NAME/bitcoin-osx-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-osx-unsigned/$NAME/bitcoin-osx-${VERSION%\.*}-build.assert 
-gpg --output ${VERSION}-win-unsigned/$NAME/bitcoin-win-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-win-unsigned/$NAME/bitcoin-win-${VERSION%\.*}-build.assert 
+gpg --output ${VERSION}-linux/${NAME}/bitcoin-linux-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-linux/$NAME/bitcoin-linux-${VERSION%\.*}-build.assert
+gpg --output ${VERSION}-osx-unsigned/$NAME/bitcoin-osx-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-osx-unsigned/$NAME/bitcoin-osx-${VERSION%\.*}-build.assert
+gpg --output ${VERSION}-win-unsigned/$NAME/bitcoin-win-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-win-unsigned/$NAME/bitcoin-win-${VERSION%\.*}-build.assert
 ```
 
 Make a PR (both the `.assert` and `.assert.sig` files) to the
