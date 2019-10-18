@@ -53,4 +53,4 @@ mv MacOSX10.11.sdk.tar.gz gitian-builder/inputs
 
 Troubleshooting
 ---------------
-See [README_osx.md](https://github.com/bitcoin/bitcoin/blob/master/doc/README_osx.md) for troubleshooting tips.
+See [build-osx.md](https://github.com/bitcoin/bitcoin/blob/master/doc/build-osx.md#deterministic-macos-dmg-notes) for troubleshooting tips.
