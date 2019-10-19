@@ -83,11 +83,11 @@ Windows and OSX have code signed binaries, but those won't be available until a 
 To build the most recent tag:
 ```
  export NAME=satoshi
- export VERSION=0.18.0rc2
+ export VERSION=0.19.0rc1
  ./gitian-build.py --detach-sign --no-commit -b $NAME $VERSION
 ```
 
-Where `0.18.0rc2` is the most recent tag (without `v`).
+Where `0.19.0rc1` is the most recent tag (without `v`).
 
 To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU cores you allocated to the VM plus one, and `5000` is a little bit less than the MBs of RAM you allocated.
 
