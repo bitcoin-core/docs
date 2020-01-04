@@ -6,7 +6,7 @@ On the host machine, register for a free Apple [developer account](https://devel
 MacOS host
 --------
 
-Using Mac OS X, you can mount the dmg, and then extract the SDK with:
+Using macOS, you can mount the dmg, and then extract the SDK with:
 ```
   $ hdiutil attach Xcode_7.3.1.dmg
   $ tar -C /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/ -czf MacOSX10.11.sdk.tar.gz MacOSX10.11.sdk

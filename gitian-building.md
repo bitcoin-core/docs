@@ -50,7 +50,7 @@ The instructions below use the automated script [gitian-build.py](https://github
 
 MacOS code signing
 ------------------
-In order to sign builds for MacOS, you need to download the free SDK and extract a file. The steps are described [here](./gitian-building/gitian-building-mac-os-sdk.md). Alternatively, you can skip the OSX build by adding `--os=lw` below.
+In order to sign builds for macOS, you need to download the free SDK and extract a file. The steps are described [here](./gitian-building/gitian-building-mac-os-sdk.md). Alternatively, you can skip the macOS build by adding `--os=lw` below.
 
 Initial Gitian Setup
 --------------------
@@ -78,7 +78,7 @@ Where `satoshi` is your GitHub name.
 
 Build binaries
 -----------------------------
-Windows and OSX have code signed binaries, but those won't be available until a few developers have gitian signed the non-codesigned binaries.
+Windows and macOS have code signed binaries, but those won't be available until a few developers have gitian signed the non-codesigned binaries.
 
 To build the most recent tag:
 ```
