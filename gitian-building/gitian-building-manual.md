@@ -13,7 +13,7 @@ offline.
 Building Bitcoin Core
 ----------------
 
-To build Bitcoin Core (for Linux, OS X and Windows) just follow the steps under 'perform
+To build Bitcoin Core (for Linux, macOS and Windows) just follow the steps under 'perform
 Gitian builds' in [https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md](https://github.com/bitcoin/bitcoin/blob/master/doc/release-process.md#setup-and-perform-gitian-builds) in the bitcoin repository.
 
 This may take some time as it will build all the dependencies needed for each descriptor.
