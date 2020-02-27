@@ -127,3 +127,18 @@ Gitian build.
  `./gitian-build.py --detach-sign -s $NAME $VERSION --nocommit`
 
 Make another pull request for these.
+
+Verify signed binaries
+----------------------
+
+If you have a macOS machine, you can verify that the unsigned binary was not modified
+during code signing, other than appending the signature. Fetch the signed dmg,
+as well as the detached signature (`gitian` is your gitian host):
+
+```bash
+VERSION=0.19.1rc2
+scp gitian:bitcoin-binaries/$VERSION/bitcoin-$VERSION-osx.dmg .
+scp -r gitian:gitian-builder/inputs/signature/osx detached-sig-osx
+hdiutil attach -mountpoint signed bitcoin-$VERSION-osx.dmg
+codesign -v --verbose signed/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt --detached detached-sig-osx/dist/Bitcoin-Qt.app/Contents/MacOS/Bitcoin-Qt.sign
+```
