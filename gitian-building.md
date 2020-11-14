@@ -23,30 +23,21 @@ Preparing the Gitian builder host
 
 The first step is to prepare the host environment that will be used to perform the Gitian builds.
 This guide explains how to set up the environment, and how to start the builds.
-
 Gitian builds are known to be working on recent versions of Debian, Ubuntu and Fedora.
-If your machine is already running one of those operating systems, you can perform Gitian builds on the actual hardware.
-Alternatively, you can install one of the supported operating systems in a virtual machine.
 
-Any kind of virtualization can be used, for example:
-- [VirtualBox](https://www.virtualbox.org/) (covered by this guide)
-- [KVM](http://www.linux-kvm.org/page/Main_Page)
-- [LXC](https://linuxcontainers.org/)
+### Debian / Ubuntu 
 
-Please refer to the following documents to set up the operating systems and Gitian.
+* [Create VirtualBox on Debian / Ubuntu](./gitian-building/gitian-building-create-vm-debian.md) 
+* [Setup Gitian on Debian / Ubuntu](./gitian-building/gitian-building-setup-gitian-debian.md)
 
-|                                   | Debian                                                                             | Fedora                                                                             |
-|-----------------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| Setup virtual machine (optional)  | [Create Debian VirtualBox](./gitian-building/gitian-building-create-vm-debian.md) | [Create Fedora VirtualBox](./gitian-building/gitian-building-create-vm-fedora.md) |
-| Setup Gitian                      | [Setup Gitian on Debian](./gitian-building/gitian-building-setup-gitian-debian.md) | [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md) |
+### Fedora
 
-Note that a version of `lxc-execute` higher or equal to 2.1.1 is required.
-You can check the version with `lxc-execute --version`.
-On Debian you might have to compile a suitable version of lxc or you can use Ubuntu 18.04 or higher instead of Debian as the host.
+* [Create Fedora VirtualBox](./gitian-building/gitian-building-create-vm-fedora.md) 
+* [Setup Gitian on Fedora](./gitian-building/gitian-building-setup-gitian-fedora.md) 
 
-Non-Debian / Ubuntu, Manual and Offline Building
-------------------------------------------------
-The instructions below use the automated script [gitian-build.py](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.py) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
+### Other distributions (Non-Debian / Ubuntu)
+
+For manual steps and instructions, see [this guide](./gitian-building/gitian-building-manual.md).
 
 MacOS code signing
 ------------------
