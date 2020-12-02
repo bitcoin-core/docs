@@ -124,6 +124,6 @@ This will create the `.sig` files that can be committed together with the `.asse
 Gitian build.
 
 
- `./gitian-build.py --detach-sign -s $NAME $VERSION --nocommit`
+ `./gitian-build.py --detach-sign --no-commit -s $NAME $VERSION`
 
 Make another pull request for these.
