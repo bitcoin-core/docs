@@ -19,6 +19,12 @@ First we need to set up dependencies. Type/paste the following in the terminal:
 sudo apt-get install git ruby apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make ubuntu-archive-keyring curl firewalld
 ```
 
+Ensure the `apt-cacher-ng` service is running:
+```bash
+sudo systemctl status apt-cacher-ng
+sudo systemctl start apt-cacher-ng  # if necessary
+```
+
 Then set up LXC and the rest with the following, which is a complex jumble of settings and workarounds:
 
 ```bash
