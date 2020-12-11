@@ -54,6 +54,11 @@ section only need to be performed once.
 
 **Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
 
+**Note**: on certain Debian installations, execution of `/etc/rc.local` may be disabled by default.
+You can check to see if this is the case by running `sudo systemctl status rc-local | grep Active:`; 
+if the output contains `failed`, you will need to manually run `sudo /etc/rc.local` before running
+the steps below.
+
 Installing Gitian
 ------------------
 
