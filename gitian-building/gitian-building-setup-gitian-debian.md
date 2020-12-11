@@ -10,7 +10,8 @@ Setting up Debian for Gitian building
 --------------------------------------
 
 In this section we will be setting up the Debian installation for Gitian building.
-We assume that a user `gitianuser` was previously added.
+We assume that a user `gitianuser` was previously added which is in the sudoers
+group (required for commands in `bin/make-vm-base` below).
 
 First we need to set up dependencies. Type/paste the following in the terminal:
 
