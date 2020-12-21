@@ -77,6 +77,7 @@ macOS code signing
 In order to sign builds for macOS, you need to download the free SDK and extract a file.
 The steps are described:
 - [here](https://github.com/bitcoin/bitcoin/blob/master/contrib/macdeploy/README.md#sdk-extraction) for `Xcode-11.3.1-11C505-extracted-SDK-with-libcxx-headers.tar.gz`
+- [here](https://github.com/bitcoin/bitcoin/blob/eb37275a6f972c81caef010b4ee9c5dc88edc759/contrib/macdeploy/README.md) for `MacOSX10.14.sdk.tar.gz`
 - [here](https://github.com/bitcoin-core/docs/blob/7ae95352931b14272a45154226123550bb92c516/gitian-building/gitian-building-mac-os-sdk.md) for `MacOSX10.11.sdk.tar.gz`.
 
 Copy the extracted SDK file into the `gitian-builder/inputs` directory:
