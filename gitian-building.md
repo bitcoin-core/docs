@@ -48,10 +48,6 @@ Non-Debian / Ubuntu, Manual and Offline Building
 ------------------------------------------------
 The instructions below use the automated script [gitian-build.py](https://github.com/bitcoin/bitcoin/blob/master/contrib/gitian-build.py) which only works in Debian/Ubuntu. For manual steps and instructions for fully offline signing, see [this guide](./gitian-building/gitian-building-manual.md).
 
-MacOS code signing
-------------------
-In order to sign builds for macOS, you need to download the free SDK and extract a file. The steps are described [here](./gitian-building/gitian-building-mac-os-sdk.md). Alternatively, you can skip the macOS build by adding `--os=lw` below.
-
 Initial Gitian Setup
 --------------------
 The `gitian-build.py` script will checkout different release tags, so it's best to copy it:
@@ -75,6 +71,21 @@ git remote add $NAME git@github.com:$NAME/gitian.sigs.git
 ```
 
 Where `satoshi` is your GitHub name.
+
+macOS code signing
+------------------
+In order to sign builds for macOS, you need to download the free SDK and extract a file.
+The steps are described:
+- [here](https://github.com/bitcoin/bitcoin/blob/master/contrib/macdeploy/README.md#sdk-extraction) for `Xcode-11.3.1-11C505-extracted-SDK-with-libcxx-headers.tar.gz`
+- [here](https://github.com/bitcoin-core/docs/blob/7ae95352931b14272a45154226123550bb92c516/gitian-building/gitian-building-mac-os-sdk.md) for `MacOSX10.11.sdk.tar.gz`.
+
+Copy the extracted SDK file into the `gitian-builder/inputs` directory:
+```bash
+mkdir -p gitian-builder/inputs
+cp 'path/to/extracted-SDK-file' gitian-builder/inputs
+```
+
+Alternatively, you can skip the macOS build by adding `--os=lw` below.
 
 Build binaries
 -----------------------------
