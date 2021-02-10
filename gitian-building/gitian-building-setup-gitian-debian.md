@@ -10,12 +10,19 @@ Setting up Debian for Gitian building
 --------------------------------------
 
 In this section we will be setting up the Debian installation for Gitian building.
-We assume that a user `gitianuser` was previously added.
+We assume that a user `gitianuser` was previously added which is in the sudoers
+group (required for commands in `bin/make-vm-base` below).
 
 First we need to set up dependencies. Type/paste the following in the terminal:
 
 ```bash
 sudo apt-get install git ruby apt-cacher-ng qemu-utils debootstrap lxc python-cheetah parted kpartx bridge-utils make ubuntu-archive-keyring curl firewalld
+```
+
+Ensure the `apt-cacher-ng` service is running:
+```bash
+sudo systemctl status apt-cacher-ng
+sudo systemctl start apt-cacher-ng  # if necessary
 ```
 
 Then set up LXC and the rest with the following, which is a complex jumble of settings and workarounds:
@@ -46,6 +53,11 @@ At the end Debian is rebooted to make sure that the changes take effect. The ste
 section only need to be performed once.
 
 **Note**: When sudo asks for a password, enter the password for the user `gitianuser` not for `root`.
+
+**Note**: on certain Debian installations, execution of `/etc/rc.local` may be disabled by default.
+You can check to see if this is the case by running `sudo systemctl status rc-local | grep Active:`; 
+if the output contains `failed`, you will need to manually run `sudo /etc/rc.local` before running
+the steps below.
 
 Installing Gitian
 ------------------
